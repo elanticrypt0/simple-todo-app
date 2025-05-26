@@ -1,0 +1,18 @@
+package templates
+
+templ AboutPage() {
+	@Base("Acerca de", AboutContent())
+}
+
+templ AboutContent() {
+	<h1>Acerca de</h1>
+	<p>Esta es una aplicación simple de lista de tareas construida con:</p>
+	<ul>
+		<li><strong>Go</strong> - Lenguaje de programación</li>
+		<li><strong>Gin</strong> - Framework web</li>
+		<li><strong>Templ</strong> - Templates type-safe</li>
+		<li><strong>HTMX</strong> - Interactividad sin JavaScript</li>
+		<li><strong>Alpine.js</strong> - Reactividad client-side</li>
+	</ul>
+	<p>Desarrollado como proyecto de aprendizaje para explorar tecnologías modernas de desarrollo web.</p>
+}

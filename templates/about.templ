@@ -1,0 +1,56 @@
+package templates
+
+templ AboutPage() {
+	@Base("Acerca de", AboutContent())
+}
+
+templ AboutContent() {
+	<h1 class="ui dividing header">Acerca de</h1>
+	<div class="ui relaxed list">
+		<div class="item">
+			<i class="code icon"></i>
+			<div class="content">
+				<div class="header">Go</div>
+				<div class="description">Lenguaje de programación</div>
+			</div>
+		</div>
+		<div class="item">
+			<i class="server icon"></i>
+			<div class="content">
+				<div class="header">Gin</div>
+				<div class="description">Framework web</div>
+			</div>
+		</div>
+		<div class="item">
+			<i class="file code icon"></i>
+			<div class="content">
+				<div class="header">Templ</div>
+				<div class="description">Templates type-safe</div>
+			</div>
+		</div>
+		<div class="item">
+			<i class="lightning icon"></i>
+			<div class="content">
+				<div class="header">HTMX</div>
+				<div class="description">Interactividad sin JavaScript</div>
+			</div>
+		</div>
+		<div class="item">
+			<i class="magic icon"></i>
+			<div class="content">
+				<div class="header">Alpine.js</div>
+				<div class="description">Reactividad client-side</div>
+			</div>
+		</div>
+		<div class="item">
+			<i class="paint brush icon"></i>
+			<div class="content">
+				<div class="header">Semantic UI</div>
+				<div class="description">Framework de estilos</div>
+			</div>
+		</div>
+	</div>
+	<div class="ui message">
+		<p>Desarrollado como proyecto de aprendizaje para explorar tecnologías modernas de desarrollo web.</p>
+	</div>
+}

@@ -1,0 +1,27 @@
+package templates
+
+templ Base(title string, content templ.Component) {
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+		<title>{ title }</title>
+		<script src="https://unpkg.com/htmx.org@1.9.10"></script>
+		<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+		<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.css"/>
+		<script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.9.2/dist/semantic.min.js"></script>
+	</head>
+	<body>
+		<div class="ui container" style="padding: 2rem;">
+			<div class="ui secondary pointing menu">
+				<a href="/" class="item">Tareas</a>
+				<a href="/about" class="item">Acerca de</a>
+			</div>
+			<main>
+				@content
+			</main>
+		</div>
+	</body>
+</html>
+}

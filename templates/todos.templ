@@ -1,0 +1,64 @@
+package templates
+
+import "todo-app/db"
+
+templ TodosPage(todos []db.Todo) {
+	@Base("Lista de Tareas", TodosContent(todos))
+}
+
+templ TodosContent(todos []db.Todo) {
+	<h1 class="ui dividing header">Lista de Tareas</h1>
+
+	<form hx-post="/todos" hx-target="#todo-list" hx-swap="beforeend" x-data="{ title: '' }" class="ui form">
+		<div class="ui action input fluid">
+			<input
+				type="text"
+				name="title"
+				placeholder="Nueva tarea..."
+				x-model="title"
+				required
+			/>
+			<button
+				type="submit"
+				class="ui blue button"
+				:disabled="!title.trim()"
+			>
+				Agregar
+			</button>
+		</div>
+	</form>
+
+	<div id="todo-list" class="ui divided list" style="margin-top: 2rem;">
+		for _, todo := range todos {
+			@TodoItem(todo)
+		}
+	</div>
+}
+
+templ TodoItem(todo db.Todo) {
+	<div class="item">
+		<div class="right floated content">
+			<button
+				hx-delete={ "/todos/" + todo.ID }
+				hx-target="closest .item"
+				hx-swap="outerHTML"
+				hx-confirm="¿Eliminar esta tarea?"
+				class="ui red mini button"
+			>
+				Eliminar
+			</button>
+		</div>
+		<div class="content">
+			<div class="ui checkbox">
+				<input
+					type="checkbox"
+					if todo.Completed { checked }
+					hx-patch={ "/todos/" + todo.ID + "/toggle" }
+					hx-target="closest .item"
+					hx-swap="outerHTML"
+				/>
+				<label class={ templ.KV("", !todo.Completed), templ.KV("disabled", todo.Completed) }>{ todo.Title }</label>
+			</div>
+		</div>
+	</div>
+}
