@@ -4,11 +4,11 @@ import (
 	"context"
 	"database/sql"
 	"time"
-	"todo-app/db"
+	"todo-app/repositories"
 )
 
 type DatabaseStorage struct {
-	queries *db.Queries
+	queries *repositories.Queries
 }
 
 func NewDatabaseStorage(dbPath string) (*DatabaseStorage, error) {
@@ -20,19 +20,19 @@ func NewDatabaseStorage(dbPath string) (*DatabaseStorage, error) {
 		return nil, err
 	}
 
-	queries := db.New(database)
+	queries := repositories.New(database)
 	return &DatabaseStorage{queries}, nil
 }
 
-func (s *DatabaseStorage) GetAll() []db.Todo {
+func (s *DatabaseStorage) GetAll() []repositories.Todo {
 	dbTodos, err := s.queries.GetAllTodos(context.Background())
 	if err != nil {
-		return []db.Todo{}
+		return []repositories.Todo{}
 	}
 
-	todos := make([]db.Todo, len(dbTodos))
+	todos := make([]repositories.Todo, len(dbTodos))
 	for i, dbTodo := range dbTodos {
-		todos[i] = db.Todo{
+		todos[i] = repositories.Todo{
 			ID:        dbTodo.ID,
 			Title:     dbTodo.Title,
 			Completed: dbTodo.Completed,
@@ -42,12 +42,12 @@ func (s *DatabaseStorage) GetAll() []db.Todo {
 	return todos
 }
 
-func (d DatabaseStorage) GetByID(id string) (db.Todo, bool) {
+func (d DatabaseStorage) GetByID(id string) (repositories.Todo, bool) {
 	dbTodo, err := d.queries.GetTodoByID(context.Background(), id)
 	if err != nil {
-		return db.Todo{}, false
+		return repositories.Todo{}, false
 	}
-	return db.Todo{
+	return repositories.Todo{
 		ID:        dbTodo.ID,
 		Title:     dbTodo.Title,
 		Completed: dbTodo.Completed,
@@ -55,8 +55,8 @@ func (d DatabaseStorage) GetByID(id string) (db.Todo, bool) {
 	}, true
 }
 
-func (s *DatabaseStorage) Create(todo db.Todo) {
-	s.queries.CreateTodo(context.Background(), db.CreateTodoParams{
+func (s *DatabaseStorage) Create(todo repositories.Todo) {
+	s.queries.CreateTodo(context.Background(), repositories.CreateTodoParams{
 		ID:        todo.ID,
 		Title:     todo.Title,
 		Completed: todo.Completed,
@@ -64,8 +64,8 @@ func (s *DatabaseStorage) Create(todo db.Todo) {
 	})
 }
 
-func (d DatabaseStorage) Update(todo db.Todo) {
-	d.queries.UpdateTodo(context.Background(), db.UpdateTodoParams{
+func (d DatabaseStorage) Update(todo repositories.Todo) {
+	d.queries.UpdateTodo(context.Background(), repositories.UpdateTodoParams{
 		ID:        todo.ID,
 		Title:     todo.Title,
 		Completed: todo.Completed,

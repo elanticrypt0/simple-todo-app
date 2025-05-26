@@ -3,7 +3,7 @@
 //   sqlc v1.29.0
 // source: todos.sql
 
-package db
+package repositories
 
 import (
 	"context"

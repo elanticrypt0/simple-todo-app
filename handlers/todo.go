@@ -6,16 +6,16 @@ import (
 	"github.com/google/uuid"
 	"log"
 	"net/http"
-	"todo-app/db"
+	"todo-app/repositories"
 	"todo-app/storage"
 	"todo-app/templates"
 )
 
 type TodoHandler struct {
-	storage storage.Storage
+	storage storage.StorageTodo
 }
 
-func NewTodoHandler(store storage.Storage) *TodoHandler {
+func NewTodoHandler(store storage.StorageTodo) *TodoHandler {
 	return &TodoHandler{
 		storage: store,
 	}
@@ -67,7 +67,7 @@ func (h *TodoHandler) CreateTodo(c *gin.Context) {
 		})
 	}
 
-	todo := db.Todo{
+	todo := repositories.Todo{
 		ID:        uuid.New().String(),
 		Title:     title,
 		Completed: false,

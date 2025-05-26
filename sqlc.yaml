@@ -5,8 +5,8 @@ sql:
     schema: "migrations"
     gen:
       go:
-        package: "db"
-        out: "db"
+        package: "repositories"
+        out: "repositories"
         sql_package: "database/sql"
         emit_json_tags: true
         emit_db_tags: true
