@@ -11,10 +11,10 @@ import (
 	_ "github.com/mattn/go-sqlite3"
 	"log"
 	"todo-app/handlers"
-	"todo-app/storage"
+	"todo-app/repositories"
 )
 
-//go:embed migrations/*.sql
+//go:embed database/migrations/*.sql
 var migrationFS embed.FS
 
 func main() {
@@ -26,8 +26,7 @@ func main() {
 		log.Fatal(err)
 	}
 
-	//store := storage.NewMemoryStorage()
-	store, err := storage.NewDatabaseStorage(dbpath)
+	store, err := repositories.NewTodoRepository(dbpath)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -64,7 +63,7 @@ func runMigrations(dbPath string) error {
 		return err
 	}
 
-	d, err := iofs.New(migrationFS, "migrations")
+	d, err := iofs.New(migrationFS, "database/migrations")
 	if err != nil {
 		return err
 	}

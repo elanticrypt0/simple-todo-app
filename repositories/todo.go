@@ -1,17 +1,17 @@
-package storage
+package repositories
 
 import (
 	"context"
 	"database/sql"
 	"time"
-	"todo-app/repositories"
+	"todo-app/models"
 )
 
-type DatabaseStorage struct {
-	queries *repositories.Queries
+type TodoRepository struct {
+	queries *models.Queries
 }
 
-func NewDatabaseStorage(dbPath string) (*DatabaseStorage, error) {
+func NewTodoRepository(dbPath string) (*TodoRepository, error) {
 	database, err := sql.Open("sqlite3", dbPath)
 	if err != nil {
 		return nil, err
@@ -20,19 +20,19 @@ func NewDatabaseStorage(dbPath string) (*DatabaseStorage, error) {
 		return nil, err
 	}
 
-	queries := repositories.New(database)
-	return &DatabaseStorage{queries}, nil
+	queries := models.New(database)
+	return &TodoRepository{queries}, nil
 }
 
-func (s *DatabaseStorage) GetAll() []repositories.Todo {
+func (s *TodoRepository) GetAll() []models.Todo {
 	dbTodos, err := s.queries.GetAllTodos(context.Background())
 	if err != nil {
-		return []repositories.Todo{}
+		return []models.Todo{}
 	}
 
-	todos := make([]repositories.Todo, len(dbTodos))
+	todos := make([]models.Todo, len(dbTodos))
 	for i, dbTodo := range dbTodos {
-		todos[i] = repositories.Todo{
+		todos[i] = models.Todo{
 			ID:        dbTodo.ID,
 			Title:     dbTodo.Title,
 			Completed: dbTodo.Completed,
@@ -42,12 +42,12 @@ func (s *DatabaseStorage) GetAll() []repositories.Todo {
 	return todos
 }
 
-func (d DatabaseStorage) GetByID(id string) (repositories.Todo, bool) {
+func (d TodoRepository) GetByID(id string) (models.Todo, bool) {
 	dbTodo, err := d.queries.GetTodoByID(context.Background(), id)
 	if err != nil {
-		return repositories.Todo{}, false
+		return models.Todo{}, false
 	}
-	return repositories.Todo{
+	return models.Todo{
 		ID:        dbTodo.ID,
 		Title:     dbTodo.Title,
 		Completed: dbTodo.Completed,
@@ -55,8 +55,8 @@ func (d DatabaseStorage) GetByID(id string) (repositories.Todo, bool) {
 	}, true
 }
 
-func (s *DatabaseStorage) Create(todo repositories.Todo) {
-	s.queries.CreateTodo(context.Background(), repositories.CreateTodoParams{
+func (s *TodoRepository) Create(todo models.Todo) {
+	s.queries.CreateTodo(context.Background(), models.CreateTodoParams{
 		ID:        todo.ID,
 		Title:     todo.Title,
 		Completed: todo.Completed,
@@ -64,15 +64,15 @@ func (s *DatabaseStorage) Create(todo repositories.Todo) {
 	})
 }
 
-func (d DatabaseStorage) Update(todo repositories.Todo) {
-	d.queries.UpdateTodo(context.Background(), repositories.UpdateTodoParams{
+func (d TodoRepository) Update(todo models.Todo) {
+	d.queries.UpdateTodo(context.Background(), models.UpdateTodoParams{
 		ID:        todo.ID,
 		Title:     todo.Title,
 		Completed: todo.Completed,
 	})
 }
 
-func (d DatabaseStorage) Delete(id string) bool {
+func (d TodoRepository) Delete(id string) bool {
 	err := d.queries.DeleteTodo(context.Background(), id)
 	return err == nil
 }

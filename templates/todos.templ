@@ -1,12 +1,12 @@
 package templates
 
-import "todo-app/repositories"
+import "todo-app/models"
 
-templ TodosPage(todos []repositories.Todo) {
+templ TodosPage(todos []models.Todo) {
 	@Base("Lista de Tareas", TodosContent(todos))
 }
 
-templ TodosContent(todos []repositories.Todo) {
+templ TodosContent(todos []models.Todo) {
 	<h1 class="ui dividing header">Lista de Tareas</h1>
 
 	<form hx-post="/todos" hx-target="#todo-list" hx-swap="beforeend" x-data="{ title: '' }" class="ui form">
@@ -35,7 +35,7 @@ templ TodosContent(todos []repositories.Todo) {
 	</div>
 }
 
-templ TodoItem(todo repositories.Todo) {
+templ TodoItem(todo models.Todo) {
 	<div class="item">
 		<div class="right floated content">
 			<button
