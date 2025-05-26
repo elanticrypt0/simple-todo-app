@@ -36,10 +36,11 @@ func main() {
 	todoHandler := handlers.NewTodoHandler(store)
 
 	// routes
-	r.GET("/todos/:id", todoHandler.GetTodoByID)
 	r.GET("/", todoHandler.IndexPage)
 	r.GET("/about", todoHandler.AboutPage)
 	r.POST("/todos", todoHandler.CreateTodo)
+	r.GET("/todos/inspect", todoHandler.Inspect)
+	r.GET("/todos/:id", todoHandler.GetTodoByID)
 	r.PATCH("/todos", todoHandler.ToggleTodo)
 	r.DELETE("/todos", todoHandler.DeleteTodo)
 

@@ -3,7 +3,7 @@ package repositories
 import (
 	"context"
 	"database/sql"
-	"time"
+	"log"
 	"todo-app/models"
 )
 
@@ -56,23 +56,39 @@ func (d TodoRepository) GetByID(id string) (models.Todo, bool) {
 }
 
 func (s *TodoRepository) Create(todo models.Todo) {
-	s.queries.CreateTodo(context.Background(), models.CreateTodoParams{
-		ID:        todo.ID,
-		Title:     todo.Title,
-		Completed: todo.Completed,
-		CreatedAt: sql.NullTime{Time: time.Now(), Valid: true},
-	})
-}
 
-func (d TodoRepository) Update(todo models.Todo) {
-	d.queries.UpdateTodo(context.Background(), models.UpdateTodoParams{
+	todo, err := s.queries.CreateTodo(context.Background(), models.CreateTodoParams{
 		ID:        todo.ID,
 		Title:     todo.Title,
 		Completed: todo.Completed,
 	})
+	if err != nil {
+		log.Println(err)
+	} else {
+		log.Println(todo)
+	}
 }
 
-func (d TodoRepository) Delete(id string) bool {
+func (d *TodoRepository) Update(todo models.Todo) {
+	err := d.queries.UpdateTodo(context.Background(), models.UpdateTodoParams{
+		ID:        todo.ID,
+		Title:     todo.Title,
+		Completed: todo.Completed,
+	})
+	if err != nil {
+		log.Println(err)
+	}
+}
+
+func (d *TodoRepository) Delete(id string) bool {
 	err := d.queries.DeleteTodo(context.Background(), id)
 	return err == nil
+}
+
+func (d *TodoRepository) Inspect() []models.GetTodosWithCategoryRow {
+	todos, err := d.queries.GetTodosWithCategory(context.Background())
+	if err != nil {
+		log.Println(err)
+	}
+	return todos
 }

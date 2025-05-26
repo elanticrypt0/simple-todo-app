@@ -8,4 +8,5 @@ type StorageTodo interface {
 	Create(todo models.Todo)
 	Update(todo models.Todo)
 	Delete(id string) bool
+	Inspect() []models.GetTodosWithCategoryRow
 }

@@ -117,3 +117,10 @@ func (h *TodoHandler) DeleteTodo(c *gin.Context) {
 
 	c.Status(http.StatusOK)
 }
+
+func (h *TodoHandler) Inspect(c *gin.Context) {
+	todos := h.storage.Inspect()
+	for _, t := range todos {
+		log.Printf("Tarea: %s (%s)\n", t.Title, t.CategoryName.String)
+	}
+}
